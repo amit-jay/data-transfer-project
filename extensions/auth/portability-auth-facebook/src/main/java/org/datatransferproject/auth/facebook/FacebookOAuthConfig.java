@@ -52,7 +52,10 @@ public class FacebookOAuthConfig implements OAuth2Config {
 
     @Override
     public Map<String, Set<String>> getExportScopes() {
-        return ImmutableMap.of("PHOTOS", ImmutableSet.of("user_photos"));
+       return  ImmutableMap.<String, Set<String>>builder()
+               .put("PHOTOS", ImmutableSet.of("user_photos"))
+               .put("CALENDAR", ImmutableSet.of("user_events"))
+               .build();
     }
 
     @Override

@@ -26,6 +26,7 @@ import org.datatransferproject.spi.cloud.storage.AppCredentialStore;
 import org.datatransferproject.spi.transfer.extension.TransferExtension;
 import org.datatransferproject.spi.transfer.provider.Exporter;
 import org.datatransferproject.spi.transfer.provider.Importer;
+import org.datatransferproject.transfer.facebook.events.FacebookEventsExporter;
 import org.datatransferproject.transfer.facebook.photos.FacebookPhotosExporter;
 import org.datatransferproject.transfer.facebook.videos.FacebookVideosExporter;
 import org.datatransferproject.transfer.facebook.videos.FacebookVideosImporter;
@@ -36,7 +37,7 @@ public class FacebookTransferExtension implements TransferExtension {
   private boolean initialized = false;
 
   private static final ImmutableList<String> SUPPORTED_SERVICES =
-      ImmutableList.of("PHOTOS", "VIDEOS");
+      ImmutableList.of("PHOTOS", "VIDEOS", "CALENDAR");
   private ImmutableMap<String, Importer> importerMap;
   private ImmutableMap<String, Exporter> exporterMap;
 
@@ -85,6 +86,7 @@ public class FacebookTransferExtension implements TransferExtension {
     ImmutableMap.Builder<String, Exporter> exporterBuilder = ImmutableMap.builder();
     exporterBuilder.put("PHOTOS", new FacebookPhotosExporter(appCredentials));
     exporterBuilder.put("VIDEOS", new FacebookVideosExporter(appCredentials, monitor));
+    exporterBuilder.put("CALENDAR", new FacebookEventsExporter(appCredentials, monitor));
     exporterMap = exporterBuilder.build();
 
     initialized = true;
