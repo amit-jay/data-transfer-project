@@ -109,7 +109,7 @@ public class FacebookEventsExporter
               null,
               getEventLocation(event.getPlace()),
               getEventTime(event.getStartTime(), event.getTimezone()),
-              getEventTime(event.getEndTime(), event.getTimezone()),
+              getEventTime(event.getEndTime() == null ? event.getStartTime() : event.getEndTime(), event.getTimezone()),
               null));
     }
 
