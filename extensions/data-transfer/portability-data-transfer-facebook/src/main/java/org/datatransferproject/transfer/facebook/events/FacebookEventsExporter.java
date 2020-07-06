@@ -25,7 +25,11 @@ import org.datatransferproject.types.transfer.auth.TokensAndUrlAuthData;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public class FacebookEventsExporter
     implements Exporter<TokensAndUrlAuthData, CalendarContainerResource> {
@@ -66,7 +70,7 @@ public class FacebookEventsExporter
 
   @Override
   public ExportResult<CalendarContainerResource> export(
-      UUID jobId, TokensAndUrlAuthData authData, Optional<ExportInformation> exportInformation)
+          UUID jobId, TokensAndUrlAuthData authData, Optional<ExportInformation> exportInformation)
       throws CopyExceptionWithFailureReason {
 
     Preconditions.checkNotNull(authData);
