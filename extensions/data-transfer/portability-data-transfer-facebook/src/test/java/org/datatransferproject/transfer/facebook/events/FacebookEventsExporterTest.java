@@ -19,6 +19,7 @@ package org.datatransferproject.transfer.facebook.events;
 import com.restfb.Connection;
 import com.restfb.types.Event;
 import com.restfb.util.StringUtils;
+import org.datatransferproject.api.launcher.Monitor;
 import org.datatransferproject.spi.transfer.provider.ExportResult;
 import org.datatransferproject.spi.transfer.types.CopyExceptionWithFailureReason;
 import org.datatransferproject.types.common.ExportInformation;
@@ -81,11 +82,13 @@ public class FacebookEventsExporterTest {
     @SuppressWarnings("unchecked")
     Connection<Event> eventConnection = mock(Connection.class);
 
+    Monitor monitor = mock(Monitor.class);
+
     when(eventsInterface.getEvents(Optional.empty())).thenReturn(eventConnection);
     when(eventConnection.getData()).thenReturn(events);
 
     facebookEventsExporter =
-        new FacebookEventsExporter(new AppCredentials("key", "secret"), eventsInterface, null);
+        new FacebookEventsExporter(new AppCredentials("key", "secret"), eventsInterface, monitor);
   }
 
   @Test
