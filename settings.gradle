@@ -67,6 +67,9 @@ include ':extensions:data-transfer:portability-data-transfer-twitter'
 // Facebook
 include ':extensions:auth:portability-auth-facebook'
 include ':extensions:data-transfer:portability-data-transfer-facebook'
+//Amazon
+include 'extensions:auth:portability-auth-amazon'
+include 'extensions:data-transfer:portability-data-transfer-amazon'
 
 include ':extensions:auth:portability-auth-offline-demo'
 include ':extensions:data-transfer:portability-data-transfer-offline-demo'
