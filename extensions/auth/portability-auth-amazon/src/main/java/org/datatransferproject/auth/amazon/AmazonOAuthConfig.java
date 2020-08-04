@@ -52,8 +52,8 @@ public class AmazonOAuthConfig implements OAuth2Config {
   @Override
   public Map<String, Set<String>> getImportScopes() {
     return ImmutableMap.<String, Set<String>>builder()
-        .put("PHOTOS", ImmutableSet.of("clouddrive:write"))
-        .put("VIDEOS", ImmutableSet.of("clouddrive:write"))
+        .put("PHOTOS", ImmutableSet.of("clouddrive:read_all clouddrive:write"))
+        .put("VIDEOS", ImmutableSet.of("clouddrive:read_all clouddrive:write"))
         .build();
   }
 }

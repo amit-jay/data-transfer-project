@@ -16,6 +16,8 @@
 
 package org.datatransferproject.transfer.amazon;
 
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -23,19 +25,20 @@ import java.io.IOException;
 import org.datatransferproject.api.launcher.ExtensionContext;
 import org.datatransferproject.api.launcher.Monitor;
 import org.datatransferproject.spi.cloud.storage.AppCredentialStore;
+import org.datatransferproject.spi.cloud.storage.TemporaryPerJobDataStore;
 import org.datatransferproject.spi.transfer.extension.TransferExtension;
 import org.datatransferproject.spi.transfer.provider.Exporter;
 import org.datatransferproject.spi.transfer.provider.Importer;
+import org.datatransferproject.transfer.amazon.common.AmazonCredentialFactory;
 import org.datatransferproject.transfer.amazon.photos.AmazonPhotosImporter;
 import org.datatransferproject.transfer.amazon.videos.AmazonVideosImporter;
 import org.datatransferproject.types.transfer.auth.AppCredentials;
 
 public class AmazonTransferExtension implements TransferExtension {
   private static final String SERVICE_ID = "Amazon";
-  private boolean initialized = false;
-
   private static final ImmutableList<String> SUPPORTED_SERVICES =
       ImmutableList.of("PHOTOS", "VIDEOS");
+  private boolean initialized = false;
   private ImmutableMap<String, Importer> importerMap;
   private ImmutableMap<String, Exporter> exporterMap;
 
@@ -62,6 +65,10 @@ public class AmazonTransferExtension implements TransferExtension {
   public void initialize(ExtensionContext context) {
     if (initialized) return;
 
+    TemporaryPerJobDataStore jobStore = context.getService(TemporaryPerJobDataStore.class);
+    HttpTransport httpTransport = context.getService(HttpTransport.class);
+    JsonFactory jsonFactory = context.getService(JsonFactory.class);
+
     AppCredentials appCredentials;
     final Monitor monitor = context.getMonitor();
     try {
@@ -77,8 +84,13 @@ public class AmazonTransferExtension implements TransferExtension {
       return;
     }
 
+    AmazonCredentialFactory amazonCredentialFactory =
+        new AmazonCredentialFactory(httpTransport, jsonFactory, appCredentials, monitor);
+
     ImmutableMap.Builder<String, Importer> importerBuilder = ImmutableMap.builder();
-    importerBuilder.put("PHOTOS", new AmazonPhotosImporter(appCredentials));
+    importerBuilder.put(
+        "PHOTOS",
+        new AmazonPhotosImporter(amazonCredentialFactory, jobStore, jsonFactory, monitor));
     importerBuilder.put("VIDEOS", new AmazonVideosImporter(appCredentials));
     importerMap = importerBuilder.build();
 
