@@ -73,6 +73,9 @@ include ':extensions:data-transfer:portability-data-transfer-facebook'
 // Koofr
 include ':extensions:auth:portability-auth-koofr'
 include ':extensions:data-transfer:portability-data-transfer-koofr'
+//WordPress
+include ':extensions:auth:portability-auth-wordpress'
+include ':extensions:data-transfer:portability-data-transfer-wordpress'
 
 include ':extensions:auth:portability-auth-offline-demo'
 include ':extensions:data-transfer:portability-data-transfer-offline-demo'
